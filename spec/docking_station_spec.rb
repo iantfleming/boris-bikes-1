@@ -40,5 +40,10 @@ describe DockingStation do
       expect { subject.release_bike }.to raise_error "No bikes available"
     end
 
+    it 'will raise an error if docking station contains 1 bike' do
+      bike = Bike.new
+      subject.dock(bike)
+      expect { subject.dock(bike) }.to raise_error 'Bike already in dock'
+    end
   end
 end
