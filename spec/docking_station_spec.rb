@@ -14,19 +14,19 @@ describe DockingStation do
   # end
 
   it 'will see if a bike is in the docking station' do
-    expect(subject).to respond_to(:bike)
+    expect(subject).to respond_to(:bikes)
   end
 
 
   it 'allows the bike to be docked' do
     bike = Bike.new
-    expect(subject.dock(bike)).to eq bike
+    expect(subject.dock(bike)).to eq [bike]
   end
 
   it 'returns docked bikes' do
     bike = Bike.new
     subject.dock(bike)
-    expect(subject.bike).to eq bike
+    expect(subject.bikes).to eq [bike]
   end
 
   describe '#release_bike' do
@@ -40,10 +40,18 @@ describe DockingStation do
       expect { subject.release_bike }.to raise_error "No bikes available"
     end
 
-    it 'will raise an error if docking station contains 1 bike' do
-      bike = Bike.new
-      subject.dock(bike)
-      expect { subject.dock(bike) }.to raise_error 'Bike already in dock'
+    # it 'will raise an error if docking station contains 1 bike' do
+    #   bike = Bike.new
+    #   subject.dock(bike)
+    #   expect { subject.dock(bike) }.to raise_error 'Bike already in dock'
+    # end
+
+    describe '#dock' do
+      it 'raises an error when full' do
+        20.times { subject.dock(Bike.new) }
+        expect { subject.dock(Bike.new) }.to raise_error 'Docking Station full'
+      end
     end
+
   end
 end
